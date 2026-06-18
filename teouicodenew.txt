@@ -15,19 +15,19 @@ end
 
 print("🍎 WindUI loaded OK")
 
--- 🔹 Tạo Window
+-- 🔹 Tạo Giao Diện Chính (Window)
 local Window = WindUI:CreateWindow({
-    Title = "🍎 kiet banana",
+    Title = "🍎 kiet aimbot",
     Size = UDim2.fromOffset(580, 340),
     Theme = "Dark",
     Transparent = true
 })
 
--- 🔹 Nút mở HUB
+-- 🔹 Cấu hình Nút Thu Nhỏ/Mở Giao Diện
 Window:EditOpenButton({
-    Title = "kiet cu🇻🇳",
-    Icon = "monitor",
-    CornerRadius = UDim.new(0,16),
+    Title = "kiet cu 🇻🇳",
+    Icon = "target",
+    CornerRadius = UDim.new(0, 16),
     StrokeThickness = 2,
     Color = ColorSequence.new(
         Color3.fromHex("FF0F7B"),
@@ -36,74 +36,79 @@ Window:EditOpenButton({
     Draggable = true,
 })
 
--- =========================
--- 🍎 TẠO CÁC TABS
--- =========================
+-- ==========================================
+-- 🍎 KHỞI TẠO CÁC DANH MỤC (TABS)
+-- ==========================================
 local Tabs = {}
-Tabs.Home1 = Window:Tab({ Title = "🍎 HOME 🍎" })
-Tabs.Home2 = Window:Tab({ Title = "player" })
+Tabs.Aimbot = Window:Tab({ Title = "🎯 AIMBOT" })
+Tabs.Settings = Window:Tab({ Title = "⚙️ CÀI ĐẶT" })
 
--- =========================
--- 🍎 CÁC CHỨC NĂNG (TAB: HOME)
--- =========================
+-- ==========================================
+-- 🎯 BIẾN CẤU HÌNH AIMBOT
+-- ==========================================
+local AimbotEnabled = false
+local TeamCheck = false
+local AimPart = "Head" -- Mặc định ngắm vào Đầu
 
--- Nút 1: Định vị Téo
-Tabs.Home1:Button({
-    Title = "🍎 Định vị Téo",
-    Callback = function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/dinhvi2.txt"
-        ))()
-        print("🍎 Đã chạy định vị")
-    end
-})
+-- ==========================================
+-- 🎯 CHỨC NĂNG TẠI TAB: AIMBOT
+-- ==========================================
 
--- Nút 2: Script Choaetik (Đã thêm link của bạn vào đây)
-Tabs.Home1:Button({
-    Title = "🔥 Script Choaetik",
-    Callback = function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/anhphihanhgia-a11y/Ki-tcript/refs/heads/main/mauscriptchoaetik%20(1).txt"
-        ))()
-        print("🔥 Đã chạy Script Choaetik")
-    end
-})
-
--- Nút 3: Hitbox (chống spam)
-local hitboxLoaded = false
-Tabs.Home1:Button({
-    Title = "🍎 Hitbox kiệt",
-    Callback = function()
-        if hitboxLoaded then
-            warn("⚠️ Hitbox đã bật rồi")
-            return
-        end
-        hitboxLoaded = true
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/hitbox%20roblox.txt"
-        ))()
-        print("🍎 Hitbox ON")
-    end
-})
-
--- =========================
--- 🍎 CÁC CHỨC NĂNG (TAB: PLAYER)
--- =========================
-
--- Toggle mẫu
-Tabs.Home2:Toggle({
-    Title = "🍎 Chế độ Pro (test)",
+-- 1. Công tắc Bật/Tắt Aimbot
+Tabs.Aimbot:Toggle({
+    Title = "🎯 Kích hoạt Aimbot",
     Default = false,
     Callback = function(state)
-        print("🍎 Pro:", state)
+        AimbotEnabled = state
+        print("Aimbot trạng thái:", AimbotEnabled)
+        -- Logic xử lý ngắm bắn của bạn sẽ kiểm tra biến AimbotEnabled ở đây
     end
 })
 
--- =========================
--- 🍎 THÔNG BÁO KHI LÀM XONG
--- =========================
+-- 2. Công tắc Kiểm tra đồng đội (Team Check)
+Tabs.Aimbot:Toggle({
+    Title = "👥 Kiểm tra đồng đội",
+    Default = false,
+    Callback = function(state)
+        TeamCheck = state
+        print("Team Check:", TeamCheck)
+    end
+})
+
+-- ==========================================
+-- ⚙️ CHỨC NĂNG TẠI TAB: CÀI ĐẶT
+-- ==========================================
+
+-- Các nút chọn vị trí ngắm (Đầu hoặc Người)
+Tabs.Settings:Button({
+    Title = "👤 Ngắm vào Đầu (Head)",
+    Callback = function()
+        AimPart = "Head"
+        WindUI:Notify({
+            Title = "🎯 AIMBOT",
+            Content = "Đã chuyển mục tiêu sang: HEAD",
+            Duration = 2
+        })
+    end
+})
+
+Tabs.Settings:Button({
+    Title = "👕 Ngắm vào Thân (HumanoidRootPart)",
+    Callback = function()
+        AimPart = "HumanoidRootPart"
+        WindUI:Notify({
+            Title = "🎯 AIMBOT",
+            Content = "Đã chuyển mục tiêu sang: TORSO",
+            Duration = 2
+        })
+    end
+})
+
+-- ==========================================
+-- 🍎 THÔNG BÁO HỆ THỐNG
+-- ==========================================
 WindUI:Notify({
-    Title = "🍎 kiệt hub",
-    Content = "Load thành công!",
+    Title = "🎯 AIMBOT HUB",
+    Content = "Khởi tạo menu ngắm bắn thành công!",
     Duration = 4
 })
