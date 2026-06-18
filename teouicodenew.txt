@@ -1,0 +1,97 @@
+pcall(function()
+    if game.CoreGui:FindFirstChild("WindUI") then
+        game.CoreGui.WindUI:Destroy()
+    end
+end)
+
+local WindUI = loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/teoscrvn/T-ng-h-p-/main/Script%20test%20(1).txt"
+))()
+
+if not WindUI then
+    warn("❌ Không load được WindUI")
+    return
+end
+
+print("🍎 WindUI loaded OK")
+
+-- 🔹 Tạo Window
+local Window = WindUI:CreateWindow({
+    Title = "🍎 kiet banana",
+    Size = UDim2.fromOffset(580, 340),
+    Theme = "Dark",
+    Transparent = true
+})
+
+-- 🔹 Nút mở HUB
+Window:EditOpenButton({
+    Title = "kiet cu🇻🇳",
+    Icon = "monitor",
+    CornerRadius = UDim.new(0,16),
+    StrokeThickness = 2,
+    Color = ColorSequence.new(
+        Color3.fromHex("FF0F7B"),
+        Color3.fromHex("F89B29")
+    ),
+    Draggable = true,
+})
+
+-- =========================
+-- 🍎 HOME
+-- =========================
+local Tabs = {}
+Tabs.Home1 = Window:Tab({ Title = "🍎 HOME 🍎" })
+Tabs.Home2 = Window:Tab({ Title = "player" })
+
+-- 🍎 Button 1: Định vị
+Tabs.Home1:Button({
+    Title = "🍎 Định vị Téo",
+    Callback = function()
+        loadstring(game:HttpGet(
+            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/dinhvi2.txt"
+        ))()
+        print("🍎 Đã chạy định vị")
+    end
+})
+
+-- 🍎 Button 2: Hitbox (chống spam)
+local hitboxLoaded = false
+Tabs.Home1:Button({
+    Title = "🍎 Hitbox Téo",
+    Callback = function()
+        if hitboxLoaded then
+            warn("⚠️ Hitbox đã bật rồi")
+            return
+        end
+        hitboxLoaded = true
+        loadstring(game:HttpGet(
+            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/hitbox%20roblox.txt"
+        ))()
+        print("🍎 Hitbox ON")
+    end
+})
+
+-- 🍎 Toggle mẫu
+Tabs.Home2:Toggle({
+    Title = "🍎 Chế độ Pro (test)",
+    Default = false,
+    Callback = function(state)
+        print("🍎 Pro:", state)
+    end
+})
+
+-- 🍎 Thông báo
+WindUI:Notify({
+    Title = "🍎 TÉO HUB",
+    Content = "Load thành công!",
+    Duration = 4
+})
+Tabs.Home1:Button({
+    Title = "đinh vij teos",
+    Callback = function()
+        loadstring(game:HttpGet(
+            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/dinhvi2.txt"
+        ))()
+        print("🍎 Đã chạy định vị")
+    end
+})
