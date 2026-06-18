@@ -37,13 +37,17 @@ Window:EditOpenButton({
 })
 
 -- =========================
--- 🍎 HOME
+-- 🍎 TẠO CÁC TABS
 -- =========================
 local Tabs = {}
 Tabs.Home1 = Window:Tab({ Title = "🍎 HOME 🍎" })
 Tabs.Home2 = Window:Tab({ Title = "player" })
 
--- 🍎 Button 1: Định vị
+-- =========================
+-- 🍎 CÁC CHỨC NĂNG (TAB: HOME)
+-- =========================
+
+-- Nút 1: Định vị Téo
 Tabs.Home1:Button({
     Title = "🍎 Định vị Téo",
     Callback = function()
@@ -54,10 +58,21 @@ Tabs.Home1:Button({
     end
 })
 
--- 🍎 Button 2: Hitbox (chống spam)
+-- Nút 2: Script Choaetik (Đã thêm link của bạn vào đây)
+Tabs.Home1:Button({
+    Title = "🔥 Script Choaetik",
+    Callback = function()
+        loadstring(game:HttpGet(
+            "https://raw.githubusercontent.com/anhphihanhgia-a11y/Ki-tcript/refs/heads/main/mauscriptchoaetik%20(1).txt"
+        ))()
+        print("🔥 Đã chạy Script Choaetik")
+    end
+})
+
+-- Nút 3: Hitbox (chống spam)
 local hitboxLoaded = false
 Tabs.Home1:Button({
-    Title = "🍎 Hitbox Téo",
+    Title = "🍎 Hitbox kiệt",
     Callback = function()
         if hitboxLoaded then
             warn("⚠️ Hitbox đã bật rồi")
@@ -71,7 +86,11 @@ Tabs.Home1:Button({
     end
 })
 
--- 🍎 Toggle mẫu
+-- =========================
+-- 🍎 CÁC CHỨC NĂNG (TAB: PLAYER)
+-- =========================
+
+-- Toggle mẫu
 Tabs.Home2:Toggle({
     Title = "🍎 Chế độ Pro (test)",
     Default = false,
@@ -80,18 +99,11 @@ Tabs.Home2:Toggle({
     end
 })
 
--- 🍎 Thông báo
+-- =========================
+-- 🍎 THÔNG BÁO KHI LÀM XONG
+-- =========================
 WindUI:Notify({
-    Title = "🍎 TÉO HUB",
+    Title = "🍎 kiệt hub",
     Content = "Load thành công!",
     Duration = 4
-})
-Tabs.Home1:Button({
-    Title = "đinh vij teos",
-    Callback = function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/teoscrvn/Script-t-o-v2/main/dinhvi2.txt"
-        ))()
-        print("🍎 Đã chạy định vị")
-    end
 })
