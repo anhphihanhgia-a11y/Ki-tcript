@@ -1,119 +1,104 @@
-pcall(function()
-    if game.CoreGui:FindFirstChild("WindUI") then
-        game.CoreGui.WindUI:Destroy()
+-- Định nghĩa các dịch vụ cần thiết
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui") -- Dùng cho Studio, nếu chạy thông thường thì dùng LocalPlayer.PlayerGui
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- 1. TẠO SCREEN GUI (Màn hình chính chứa giao diện)
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "KietHubGiaoDien"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.Parent = playerGui
+
+-- 2. TẠO MENU CHÍNH (Main Frame)
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Size = UDim2.new(0, 350, 0, 250) -- Rộng 350, Cao 250
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -125) -- Căn giữa màn hình
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25) -- Màu nền tối
+MainFrame.BorderSizePixel = 0
+MainFrame.Active = true
+MainFrame.Draggable = true -- Cho phép kéo giữ di chuyển menu trên màn hình
+MainFrame.Parent = ScreenGui
+
+-- Tạo góc bo tròn cho Menu
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 10)
+MainCorner.Parent = MainFrame
+
+-- 3. TIÊU ĐỀ MENU (Title)
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Title.Text = "KIET HUB - BETA v1.0"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 18
+Title.Font = Enum.Font.SourceSansBold
+Title.Parent = MainFrame
+
+local TitleCorner = Instance.new("UICorner")
+TitleCorner.CornerRadius = UDim.new(0, 10)
+TitleCorner.Parent = Title
+
+-- 4. NÚT BẬT/TẮT CHỨC NĂNG (Toggle Button)
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Name = "ToggleFunction"
+ToggleButton.Size = UDim2.new(0, 200, 0, 50)
+ToggleButton.Position = UDim2.new(0.5, -100, 0.4, 0)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Đỏ là đang tắt
+ToggleButton.Text = "Auto Farm: OFF"
+ToggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextSize = 16
+ToggleButton.Font = Enum.Font.SourceSans
+ToggleButton.Parent = MainFrame
+
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0, 8)
+ButtonCorner.Parent = ToggleButton
+
+-- Logic xử lý khi bấm nút Toggle
+local isToggled = false
+ToggleButton.MouseButton1Click:Connect(function()
+    isToggled = not isToggled
+    if isToggled then
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(50, 200, 50) -- Đổi sang xanh lá
+        ToggleButton.Text = "Auto Farm: ON"
+        print("Đã bật chức năng Auto!")
+        -- Bạn có thể viết thêm logic xử lý hành động của game ở đây
+    else
+        ToggleButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50) -- Đổi lại màu đỏ
+        ToggleButton.Text = "Auto Farm: OFF"
+        print("Đã tắt chức năng Auto!")
     end
 end)
 
-local WindUI = loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/teoscrvn/T-ng-h-p-/main/Script%20test%20(1).txt"
-))()
+-- 5. NÚT ĐÓNG/MỞ NHANH MENU (Close/Open Button)
+-- Nút này nằm góc màn hình để ẩn menu đi khi không dùng
+local MenuButton = Instance.new("TextButton")
+MenuButton.Name = "MenuButton"
+MenuButton.Size = UDim2.new(0, 60, 0, 60)
+MenuButton.Position = UDim2.new(0, 10, 0.5, -30) -- Nằm bên cạnh trái màn hình
+MenuButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+MenuButton.Text = "OPEN"
+MenuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MenuButton.TextSize = 14
+MenuButton.Font = Enum.Font.SourceSansBold
+MenuButton.Parent = ScreenGui
 
-if not WindUI then
-    warn("❌ Không load được WindUI")
-    return
-end
+local MenuButtonCorner = Instance.new("UICorner")
+MenuButtonCorner.CornerRadius = UDim.new(1, 0) -- Biến nút thành hình tròn
+MenuButtonCorner.Parent = MenuButton
 
-print("⭐ WindUI Premium loaded OK")
-
--- 🔹 Khởi tạo Window với kích thước và màu sắc tối ưu
-local Window = WindUI:CreateWindow({
-    Title = "⭐ KIET BANANA PREMIUM v2.0",
-    Size = UDim2.fromOffset(600, 380),
-    Theme = "Dark",
-    Transparent = false
-})
-
--- 🔹 Nút mở HUB thiết kế chuyên nghiệp hơn
-Window:EditOpenButton({
-    Title = "Kiet Hub 🌟",
-    Icon = "shield",
-    CornerRadius = UDim.new(0, 12),
-    StrokeThickness = 1.5,
-    Color = ColorSequence.new(
-        Color3.fromHex("00FFA3"), -- Màu Neon Cyan
-        Color3.fromHex("007BFF")  -- Màu Blue
-    ),
-    Draggable = true,
-})
-
--- ==========================================
--- 📂 KHỞI TẠO CÁC DANH MỤC (TABS)
--- ==========================================
-local Tabs = {}
-Tabs.Main = Window:Tab({ Title = "⚡ MAIN CONTROLS" })
-Tabs.Visuals = Window:Tab({ Title = "👁️ VISUALS" })
-Tabs.Settings = Window:Tab({ Title = "⚙️ CONFIG" })
-
--- ==========================================
--- ⚡ TAB: MAIN CONTROLS (Quản lý chính)
--- ==========================================
-
--- Công tắc đa năng
-Tabs.Main:Toggle({
-    Title = "Kích hoạt hệ thống",
-    Default = false,
-    Callback = function(state)
-        print("Trạng thái hệ thống:", state)
+-- Logic đóng mở Main Frame
+MenuButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+    if MainFrame.Visible then
+        MenuButton.Text = "CLOSE"
+        MenuButton.BackgroundColor3 = Color3.fromRGB(150, 150, 150)
+    else
+        MenuButton.Text = "OPEN"
+        MenuButton.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     end
-})
-
--- Hộp chọn (Dropdown) - Cho phép chọn nhiều tùy chọn chuyên nghiệp
-local TargetDropdown = Tabs.Main:Dropdown({
-    Title = "Vị trí mục tiêu ưu tiên",
-    Multi = false,
-    Options = {"Head", "HumanoidRootPart", "Torso", "Random"},
-    Default = "Head",
-    Callback = function(selected)
-        print("Mục tiêu đã chọn:", selected)
-    end
-})
-
--- ==========================================
--- 👁️ TAB: VISUALS (Cài đặt hiển thị)
--- ==========================================
-
--- Thanh kéo (Slider) - Dùng để chỉnh thông số như Tầm nhìn (FOV), Khoảng cách
-Tabs.Visuals:Slider({
-    Title = "Phạm vi quét (FOV Radius)",
-    Step = 1,
-    Min = 30,
-    Max = 300,
-    Default = 100,
-    Callback = function(value)
-        print("Đã chỉnh FOV thành:", value)
-    end
-})
-
--- Bảng chọn màu (Colorpicker) - Thay đổi màu sắc giao diện hiển thị
-Tabs.Visuals:Colorpicker({
-    Title = "Màu sắc hiển thị vòng FOV",
-    Default = Color3.fromRGB(0, 255, 163),
-    Callback = function(color)
-        print("Màu FOV mới:", tostring(color))
-    end
-})
-
--- ==========================================
--- ⚙️ TAB: CONFIG (Cấu hình hệ thống)
--- ==========================================
-
--- Nút bấm thực thi với trạng thái kiểm tra nâng cao
-Tabs.Settings:Button({
-    Title = "Xóa toàn bộ cài đặt cũ (Reset)",
-    Callback = function()
-        WindUI:Notify({
-            Title = "HỆ THỐNG",
-            Content = "Đã đưa cấu hình về mặc định!",
-            Duration = 3
-        })
-    end
-})
-
--- ==========================================
--- 🔔 THÔNG BÁO KHỞI ĐỘNG NÂNG CAO
--- ==========================================
-WindUI:Notify({
-    Title = "🌟 KIET BANANA v2.0",
-    Content = "Đã tải cấu hình cao cấp thành công!",
-    Duration = 5
-})
+end)
